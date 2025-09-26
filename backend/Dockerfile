@@ -5,6 +5,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
+WORKDIR /app/cmd/app
 COPY . .
 RUN go build -o main .
 
@@ -14,7 +15,7 @@ RUN addgroup -S app && adduser -S app -G app
 
 WORKDIR /app
 
-COPY --from=builder --chown=app:app /app/main .
+COPY --from=builder --chown=app:app /app/cmd/app/main .
 
 USER app
 
