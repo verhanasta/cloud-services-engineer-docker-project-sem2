@@ -7,6 +7,19 @@ services:
       - "8081:8081"
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:8081/health" ]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+    volumes:
+      - backend_data:/app/data
 
   frontend:
     build: ./frontend
@@ -18,6 +31,25 @@ services:
       - backend
     networks:
       - app-network
+    healthcheck:
+      test: [ "CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:8080" ]
+      interval: 20s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+    volumes:
+      - frontend_static:/app/static
+
+volumes:
+  backend_data:
+    driver: local
+  frontend_static:
+    driver: local
 
 networks:
   app-network:
