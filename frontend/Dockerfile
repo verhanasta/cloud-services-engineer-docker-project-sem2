@@ -11,13 +11,14 @@ COPY . .
 ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN npm run build
 
-FROM nginx:alpine
+FROM node:18-alpine
 
-RUN rm /etc/nginx/conf.d/default.conf
+RUN npm install -g serve
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /usr/src/app
 
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist ./dist
 
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+CMD ["serve", "-s", "dist", "-l", "80"]
