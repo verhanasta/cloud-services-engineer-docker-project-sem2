@@ -1,7 +1,8 @@
 services:
   backend:
     build: ./backend
-    container_name: docker-project-backend:latest
+    container_name: docker-project-backend
+    image: docker-project-backend:latest
     ports:
       - "8081:8081"
     networks:
@@ -9,7 +10,8 @@ services:
 
   frontend:
     build: ./frontend
-    container_name: docker-project-frontend:latest
+    container_name: docker-project-frontend
+    image: docker-project-frontend:latest
     ports:
       - "8080:8080"
     depends_on:
