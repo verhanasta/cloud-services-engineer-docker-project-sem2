@@ -3,7 +3,7 @@ name: Docker Project Deploy
 on:
   push:
     branches:
-      - zaglushka
+      - main
 
 jobs:
   build_and_push_to_docker_hub:
@@ -42,3 +42,14 @@ jobs:
         uses: docker/setup-buildx-action@v2
       - name: Build via Docker Compose
         uses: hoverkraft-tech/compose-action@v2.2.0
+        with:
+          compose-file: docker-compose.yml
+          action: build
+      - name: Run via Docker Compose
+        uses: hoverkraft-tech/compose-action@v2.2.0
+        with:
+          compose-file: docker-compose.yml
+          action: up
+          detach: true
+          wait: true
+          wait-timeout: 120
