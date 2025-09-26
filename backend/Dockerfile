@@ -13,6 +13,8 @@ FROM alpine:latest
 
 RUN addgroup -S app && adduser -S app -G app
 
+WORKDIR /app
+
 COPY --from=builder --chown=app:app /app/main .
 
 USER app
